@@ -8,13 +8,13 @@
 </head>
 <body>
 
-<div class="container" id="app">
+<div class="container" id="app" v-cloak>
   <div class="card">
     <h1>План по изучению Vue.js</h1>
 
     <div class="steps">
       <div class="steps-content">
-        {{ text }}
+        {{ currentStep.text }}
       </div>
       <ul class="steps-list">
         <li class="steps-item"
@@ -29,28 +29,19 @@
         </li>
       </ul>
 
-      <div>
+      <div v-if="isActive">
         <button class="btn"
                 @click="prev"
-                v-if="activeIndex !== 0">
+                :disabled="prevDisabled">
           Назад
         </button>
-        <button class="btn" v-else disabled>Назад</button>
         <button class="btn primary"
-                @click="next"
-                v-if="activeIndex < steps.length - 1">
-          Вперед
+                @click="nextOfFinish">
+          {{ lastStep ? 'Закончить' : 'Вперед'}}
         </button>
-        <button class="btn primary"
-                @click="btnFinish"
-                v-else-if="activeIndex === steps.length - 1">
-          Закончить
-        </button>
-        <button class="btn primary"
-                @click="reset"
-                v-else-if="activeIndex === steps.length + 1">
-          Начать заново
-        </button>
+      </div>
+      <div v-else>
+        <button class="btn primary" @click="reset">Начать заново</button>
       </div>
 
     </div>
